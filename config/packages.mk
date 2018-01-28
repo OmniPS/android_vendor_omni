@@ -9,8 +9,6 @@ PRODUCT_PACKAGES += \
     QuickSearchBox \
     OmniClockOSS \
     MusicFX \
-    audio_effects.conf \
-    libcyanogen-dsp \
     Phonograph \
     Turbo \
     MatLog
