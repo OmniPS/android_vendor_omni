@@ -11,7 +11,8 @@ PRODUCT_PACKAGES += \
     MusicFX \
     Phonograph \
     Turbo \
-    MatLog
+    MatLog \
+    OmniChange
 
 # Additional tools
 PRODUCT_PACKAGES += \
@@ -51,7 +52,9 @@ PRODUCT_PACKAGES += \
     PixelTheme \
     SluttyPinkTheme \
     DarknessMeisterTheme \
-    SmokedGreenTheme
+    SmokedGreenTheme \
+    Bl4ckAndYell0Theme \
+    OmniTheme
 
 PRODUCT_PACKAGES += \
     Launcher3Dark
