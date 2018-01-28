@@ -32,7 +32,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # enable ADB authentication if not on eng build
 ifneq ($(TARGET_BUILD_VARIANT),eng)
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES  += ro.adb.secure=1
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES  += ro.adb.secure=0
 endif
 
 # Backup Tool
@@ -110,6 +110,6 @@ ifeq ($(ROM_BUILDTYPE),SECURITY_RELEASE)
 endif
 # but not homemades
 ifeq ($(ROM_BUILDTYPE),HOMEMADE)
-    WITH_DEXPREOPT := false
-    WITH_DEXPREOPT_PIC := false
+    WITH_DEXPREOPT := true
+    WITH_DEXPREOPT_PIC := true
 endif
