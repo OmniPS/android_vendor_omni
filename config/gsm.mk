@@ -4,4 +4,5 @@ PRODUCT_COPY_FILES += \
 
 # SIM Toolkit
 PRODUCT_PACKAGES += \
-    Stk
+    Stk \
+    Messaging 

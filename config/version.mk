@@ -20,5 +20,5 @@ endif
 
 # Apply it to build.prop
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.modversion=OmniROM-$(ROM_VERSION) \
+    ro.modversion=OmniPS-$(ROM_VERSION) \
     ro.omni.version=$(ROM_VERSION)
