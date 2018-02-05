@@ -23,6 +23,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.modversion=OmniPS-$(ROM_VERSION) \
     ro.omni.version=$(ROM_VERSION)
 
-ROM_FINGERPRINT := OmniROM/$(PLATFORM_VERSION)/$(TARGET_PRODUCT_SHORT)/$(shell date +%Y%m%d.%H:%M)
+ROM_FINGERPRINT := OmniROM/$(PLATFORM_VERSION)/$(TARGET_PRODUCT_SHORT)/$(shell date +%Y%m%d)
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.omni.fingerprint=$(ROM_FINGERPRINT)
