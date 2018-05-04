@@ -44,8 +44,8 @@ PRODUCT_BOOT_JARS += telephony-ext
 
 # OMS support
 #PRODUCT_PACKAGES += ThemeInterfacer \
-    OmniTheme \
-    OmniSubs
+#    OmniTheme \
+#    OmniSubs
 
 # Themes
 PRODUCT_PACKAGES += \
