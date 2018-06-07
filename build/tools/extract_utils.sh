@@ -123,13 +123,13 @@ function target_file() {
 #
 # target_args:
 #
-# $1: colon delimited list
+# $1: semicolon delimited list
 #
 # Returns optional arguments (last value) for given target
 #
 function target_args() {
     local LINE="$1"
-    local SPLIT=(${LINE//:/ })
+    local SPLIT=(${LINE//;/ })
     local COUNT=${#SPLIT[@]}
     if [ "$COUNT" -gt "1" ]; then
         if [[ ! "${SPLIT[$COUNT-1]}" =~ .*/.* ]]; then
@@ -148,7 +148,8 @@ function target_args() {
 #
 function prefix_match() {
     local PREFIX="$1"
-    for FILE in "${PRODUCT_PACKAGES_LIST[@]}"; do
+    for LINE in "${PRODUCT_PACKAGES_LIST[@]}"; do
+        local FILE=$(target_file "$LINE")
         if [[ "$FILE" =~ ^"$PREFIX" ]]; then
             printf '%s\n' "${FILE#$PREFIX}"
         fi
@@ -218,7 +219,7 @@ function write_product_copy_files() {
             LINEEND=""
         fi
 
-        TARGET=$(target_file "$FILE")
+        TARGET=$(echo $(target_file "$FILE") | sed 's/\;.*//')
         if [ "$TREBLE_COMPAT" == "true" ] || [ "$TREBLE_COMPAT" == "1" ]; then
             if prefix_match_file "vendor/" $TARGET ; then
                 local OUTTARGET=$(truncate_file $TARGET)
@@ -266,7 +267,7 @@ function write_packages() {
     local SRC=
 
     for P in "${FILELIST[@]}"; do
-        FILE=$(target_file "$P")
+        FILE=$(echo $(target_file "$P") | sed 's/\;.*//')
         ARGS=$(target_args "$P")
 
         BASENAME=$(basename "$FILE")
@@ -305,12 +306,10 @@ function write_packages() {
                 printf 'LOCAL_MULTILIB := %s\n' "$EXTRA"
             fi
         elif [ "$CLASS" = "APPS" ]; then
-            if [ -z "$ARGS" ]; then
-                if [ "$EXTRA" = "priv-app" ]; then
-                    SRC="$SRC/priv-app"
-                else
-                    SRC="$SRC/app"
-                fi
+            if [ "$EXTRA" = "priv-app" ]; then
+                SRC="$SRC/priv-app"
+            else
+                SRC="$SRC/app"
             fi
             printf 'LOCAL_SRC_FILES := %s/%s\n' "$SRC" "$FILE"
             local CERT=platform
@@ -360,7 +359,7 @@ function write_packages() {
             printf 'LOCAL_PRIVILEGED_MODULE := true\n'
         fi
         if [ "$VENDOR_PKG" = "true" ]; then
-            printf 'LOCAL_PROPRIETARY_MODULE := true\n'
+            printf 'LOCAL_VENDOR_MODULE := true\n'
         fi
         printf 'include $(BUILD_PREBUILT)\n\n'
     done
@@ -656,6 +655,7 @@ function parse_file_list() {
 
         # if line starts with a dash, it needs to be packaged
         if [[ "$SPEC" =~ ^- ]]; then
+            SPEC=$(echo "${SPEC}" | sed 's/[^"]*://')
             PRODUCT_PACKAGES_LIST+=("${SPEC#-}")
             PRODUCT_PACKAGES_HASHES+=("$HASH")
         else
@@ -958,10 +958,10 @@ function extract() {
 
     for (( i=1; i<COUNT+1; i++ )); do
 
-        local FROM=$(target_file "${FILELIST[$i-1]}")
+        local FROM=$(echo $(target_file "${FILELIST[$i-1]}") | sed 's/\;.*//')
         local ARGS=$(target_args "${FILELIST[$i-1]}")
         local SPLIT=(${FILELIST[$i-1]//:/ })
-        local FILE="${SPLIT[0]#-}"
+        local FILE=$(echo "${SPLIT[0]#-}" | sed 's/\;.*//')
         local OUTPUT_DIR="$OUTPUT_ROOT"
         local TMP_DIR="$OUTPUT_TMP"
         local TARGET=
